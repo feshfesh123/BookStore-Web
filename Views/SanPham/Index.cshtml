@@ -1,0 +1,61 @@
+﻿@model IEnumerable<BookStoreWeb.Models.Domain.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h2> Quản lí sản phẩm</h2>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create">THÊM</a>
+</p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr style="font-size: 18px" class="table-primary">
+            <td>Tên Sách</td>
+            <td>Số Lượng</td>
+            <td>Tác Giả</td>
+            <td>NXB</td>
+            <td>Nhà Cung Cấp</td>
+            <td>Giá Tiền</td>
+            <td>Hình Ảnh</td>
+            <td>Thể Loại</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProducQuantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tacgia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NXB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nhacungcap)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductPrice)
+            </td>
+            <td>
+                <img src="~/image/@item.ProductImage" class="img-thumbnail" width="100px" height="100px" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Type.Name)
+            </td>
+            <td>
+                <a class="btn btn-outline-info" asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> 
+                <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

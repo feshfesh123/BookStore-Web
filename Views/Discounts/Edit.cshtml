@@ -1,0 +1,52 @@
+﻿@model BookStoreWeb.Models.Domain.Discount
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <h3>Chỉnh sửa </h3>
+
+<h4>Discount</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DiscountId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Percent" class="control-label"></label>
+                <input asp-for="Percent" class="form-control" />
+                <span asp-validation-for="Percent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreatDate" class="control-label"></label>
+                <input asp-for="CreatDate" class="form-control" />
+                <span asp-validation-for="CreatDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateValid" class="control-label"></label>
+                <input asp-for="DateValid" class="form-control" />
+                <span asp-validation-for="DateValid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuantityDiscount" class="control-label"></label>
+                <input asp-for="QuantityDiscount" class="form-control" />
+                <span asp-validation-for="QuantityDiscount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

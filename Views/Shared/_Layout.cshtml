@@ -1,0 +1,213 @@
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BookStoreWeb</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:wght@500&family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/css/style.css" type="text/css">
+
+    @*chuyen dong slide*@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <style>
+
+        .mySlides {
+            display: none;
+        }
+    </style>
+
+
+</head>
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+
+    <!-- Humberger End -->
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+
+
+            <div class="container">
+                <img src="~/image/back-to-school-1260x100.png" />
+            </div>
+        </div>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="header__logo">
+                        <a asp-controller="Home" asp-action="Index"><img src="~/img/logors.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+                <div class="col-lg-7">
+                    <div class="header__cart">
+                        <ul>
+                            @{
+                                // Kiểm tra đã đăng nhập hay chưa
+                                var email = Context.Session.GetString("Email");
+                                if (email != null)
+                                {   // Đăng nhập => Hiện email và nút đăng xuất
+                                    <div class="header__top__right__auth">
+                                        <a href=""><i class="fa fa-user-circle ml-lg-3"></i>@email</a>
+                                    </div>
+                                    <div class="header__top__right__auth">
+                                        <a href="https://localhost:44379/Accounts/Logout"><i class="fa fa-sign-out ml-lg-3"></i>Đăng xuất</a>
+                                        @*<i class="fa fa-sign-out ml-lg-3">@Html.ActionLink("Đăng xuất","Logout", "Accounts")</i>*@
+                                    </div>
+                                }
+                                else
+                                {   // Chưa đăng nhập => Hiện nút đăng nhập và đăng ký
+                                    <div class="header__top__right__auth">
+                                        <a asp-controller="Accounts" asp-action="Login"><i class="fa fa-user ml-lg-3"></i> Đăng nhập</a>
+                                    </div>
+                                    <div class="header__top__right__auth">
+                                        <a asp-controller="Accounts" asp-action="Register"><i class="fa fa-user-plus ml-lg-3"></i> Đăng ký</a>
+                                    </div>
+                                }
+                                        }
+                            <div class="header__top__right__auth">
+                                <a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-cart ml-lg-3"></i> Giỏ hàng</a>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <div class="container">
+        <div id="menu">
+            <ul>
+                <li><a asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                <li><a asp-controller="DanhSach" asp-action="Index">Sản Phẩm</a></li>
+                <li><a href="#">Diễn đàn</a></li>
+                <li><a href="#">Tin tức</a></li>
+                <li><a href="#">Hỏi đáp</a></li>
+                <li><a href="#">Liên hệ</a></li>
+                <li><a asp-controller="GiaoDienQL" asp-action="Index">Quản Lí</a></li>
+            </ul>
+        </div>
+    </div>
+    <br />
+
+ 
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+
+    <footer class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-md-4">
+                    <div>
+                        <a asp-controller="Home" asp-action="Index"><img src="~/img/logors.png" alt=""></a>
+                    </div>
+                    <ul>
+                        <b><li>DỊCH VỤ</li></b>
+                        <li>Chính sách bảo mật</li>
+                        <li>Điều khoản sử dụng</li>
+                        <li>Giới thiệu BookBook</li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-4">
+                    <div style="  height: 70px">
+
+                    </div>
+                    <ul>
+                        <b><li>HỖ TRỢ</li></b>
+                        <li>Chính sách đổi trả </li>
+                        <li>Phương thức vận chuyển</li>
+                        <li>Phương thức thanh toán</li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-4">
+                    <div class="footer__widget mt-lg-5">
+                        <a href="#"><i class="fa fa-facebook"></i></a>
+                        <a href="#"><i class="fa fa-instagram"></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-pinterest"></i></a>
+                    </div>
+                    <div class="mt-lg-3"><img src="~/img/payment-item.png" alt=""></div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Js Plugins -->
+    <script src="~/js/jquery-3.3.1.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery.nice-select.min.js"></script>
+    <script src="~/js/jquery-ui.min.js"></script>
+    <script src="~/js/jquery.slicknav.js"></script>
+    <script src="~/js/mixitup.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+
+
+    <style>
+
+        #menu ul {
+            background: #6d7378;
+            list-style-type: none;
+            text-align: center;
+        }
+
+        #menu li {
+            color: #f1f1f1;
+            display: inline-block;
+            width: 120px;
+            height: 40px;
+            line-height: 40px;
+            margin-left: -5px;
+        }
+
+        #menu a {
+            text-decoration: none;
+            color: #fff;
+            display: block;
+        }
+
+            #menu a:hover {
+                background: #F1F1F1;
+                color: #333;
+            }
+    </style>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

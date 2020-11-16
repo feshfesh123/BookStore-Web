@@ -1,0 +1,63 @@
+﻿@model List<BookStoreWeb.Models.Domain.Product>
+@{
+    ViewData["Title"] = "Sort";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3> Kết quả sắp xếp :</h3>
+<br />
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card h-100">
+                <div class="card-img-top">
+                    <div class="img">
+                        <img src="~/image/@item.ProductImage" alt="">
+                        <div class="txt">
+                            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId"><h3 style="color:aliceblue">MUA NGAY</h3></a>
+                            <a asp-controller="Detail" asp-action="Index" asp-route-id="@item.ProductId" asp-route-name="@item.ProductName"><h3 style="color:aliceblue">XEM CHI TIẾT</h3></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">@item.ProductName </h4>
+                    <p style="        font-size: 20px;color: sandybrown" class="card-text">@item.ProductPrice&nbsp; đ &nbsp;&nbsp;<img src="~/image/hot-icon-1-1.gif" style="width: 45px; height: 30px" /></p>
+                </div>
+            </div>
+        </div>}
+</div>
+
+@*giao dien cua cart item*@
+
+<style>
+
+    .img {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .txt {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.52);
+        position: absolute;
+        bottom: 50px;
+        text-align: center;
+        padding: 10px;
+        box-sizing: border-box;
+        opacity: 0;
+    }
+
+    .img:hover div.txt {
+        opacity: 1;
+        transform: translateY(50px);
+        transition: ease-in-out 0.5s;
+    }
+
+    .img:hover img {
+        transform: scale(1.5);
+        transition: all ease-in-out 0.5s;
+    }
+</style>

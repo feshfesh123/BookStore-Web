@@ -1,0 +1,167 @@
+﻿@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Core.Common;
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*phan dau*@
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>Các loại sách</span>
+                    </div>
+                    <ul>
+                        <li><a href="https://localhost:44379/DanhSach/TieuThuyet">Tiểu Thuyết</a></li>
+                        <li><a href="https://localhost:44379/DanhSach/TruyenNgan">Truyện Ngắn</a></li>
+                        <li><a href="https://localhost:44379/DanhSach/TruỵenDai">Truyện Dài</a></li>
+                        <li><a href="#">Ngôn Tình</a></li>
+                        <li><a href="#">Kiếm Hiệp</a></li>
+                        <li><a href="#">Trinh Thám</a></li>
+                        <li><a href="#">Kinh Dị</a></li>
+                        <li><a href="#">Kĩ Năng Sống</a></li>
+                        <li><a href="#">Văn Hóa</a></li>
+                        <li><a href="#">Chính Trị - Triết Học</a></li>
+                        <li><a href="#">Báo - Tạp Chí</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="hero__search__form">
+                        <form action="#">
+                            <input type="text" placeholder="Tìm kiếm sản phẩm mong muốn ...">
+                            <button type="submit" class="site-btn">TÌM</button>
+
+
+                        </form>
+
+
+                    </div>
+                </div>
+
+                @*<div class="hero__item set-bg" data-setbg="img/5138.jpg">*@
+
+
+
+                <div class="w3-content w3-display-container">
+                    <img class="mySlides" src="~/image/baosalemuaha_mainbanner_920x420.jpg" style="width:100%">
+                    <img class="mySlides" src="~/image/CPHV_mainbanner_920x420.jpg" style="width:100%">
+                    <img class="mySlides" src="~/image/MCBooks-920x420.jpg" style="width:100%">
+                    <img class="mySlides" src="~/image/NCC-T6-920x420.jpg" style="width:100%">
+
+
+                    <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+                    <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+                </div>
+
+
+
+                <div class="hero__text">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<br />
+<br />
+
+<div class="row">
+    @foreach (var item in ViewBag.products)
+    {
+        <div class="col-lg-3 col-md-6 mb-4">
+
+            <div class="card h-100">
+                <div class="card-img-top">
+                    <div class="img">
+                        <img src="~/image/@item.ProductImage" alt="">
+                        <div class="txt">
+                            <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId"><h3 style="color:aliceblue">MUA NGAY</h3></a>
+                            <a asp-controller="Detail" asp-action="Index" asp-route-id="@item.ProductId" asp-route-name="@item.ProductName"><h3 style="color:aliceblue">XEM CHI TIẾT</h3></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">@item.ProductName </h4>
+                    <p style="        font-size: 20px;color: sandybrown" class="card-text">@item.ProductPrice&nbsp; đ </p>
+                </div>
+            </div>
+        </div>}
+</div>
+
+<div>
+   
+   @Html.PagedListPager((IPagedList)ViewBag.products, page => Url.Action("Index", new { page }))
+</div>
+
+
+@*giao dien cua cart item*@
+
+<style>
+    /*img {
+                width: 100%;
+                height: auto;
+                transition: all ease-in-out;
+            }
+        */
+    .img {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .txt {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.52);
+        position: absolute;
+        bottom: 50px;
+        text-align: center;
+        padding: 10px;
+        box-sizing: border-box;
+        opacity: 0;
+    }
+
+    .img:hover div.txt {
+        opacity: 1;
+        transform: translateY(50px);
+        transition: ease-in-out 0.5s;
+    }
+
+    .img:hover img {
+        transform: scale(1.5);
+        transition: all ease-in-out 0.5s;
+    }
+</style>
+
+@*chay slide*@
+<script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        if (n > x.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = x.length }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        x[slideIndex - 1].style.display = "block";
+    }
+</script>
+
+
