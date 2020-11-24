@@ -16,8 +16,7 @@
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <div class="card-title">
                     <h3 class="card-label">
-                        User Management
-                        <span class="d-block text-muted pt-2 font-size-sm">User management made easy</span>
+                        Quản lý người dùng
                     </h3>
                 </div>
             </div>
@@ -26,7 +25,7 @@
             <div class="d-flex float-right mr-5">
                 <!--begin::Dropdown-->
                 <div class="btn-group ml-2">
-                    <a type="submit" asp-action="Create" asp-controller="ManageUser" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base ml-5 mt-2">Add new user</a>
+                    <a type="submit" asp-action="Create" asp-controller="ManageUser" class="btn btn-primary font-weight-bold btn-sm px-3 font-size-base ml-5 mt-2">Thêm người dùng</a>
                 </div>
                 <!--end::Dropdown-->
             </div>
@@ -93,7 +92,7 @@
                     }
                 }, {
                     field: 'OrderID',
-                    title: 'Customer',
+                    title: 'Khách hàng',
                     width: 250,
                     template: function (data) {
                         var output = '';
@@ -112,7 +111,7 @@
                     }
                 }, {
                     field: 'Country',
-                    title: 'Password',
+                    title: 'Mật khẩu',
                     template: function (row) {
                         var output = '';
 
@@ -123,7 +122,7 @@
                     }
                 }, {
                     field: 'ShipDate',
-                    title: 'Created Date',
+                    title: 'Ngày tạo',
                     type: 'date',
                     format: 'dd-MM-yyy HH:mm:ss',
                     template: function (row) {
@@ -136,7 +135,7 @@
                     },
                 }, {
                     field: 'CompanyName',
-                    title: 'Edited Date',
+                    title: 'Ngày chỉnh sửa',
                     type: 'date',
                     format: 'dd-MM-yyy HH:mm:ss',
                     template: function (row) {
@@ -149,7 +148,7 @@
                     }
                 }, {
                     field: 'Status',
-                    title: 'Status',
+                    title: 'Trạng thái',
                     // callback function support for column rendering
                     template: function (row) {
                         var status = {
@@ -165,7 +164,7 @@
                     },
                 }, {
                     field: 'Actions',
-                    title: 'Actions',
+                    title: 'Thao tác',
                     sortable: false,
                     width: 130,
                     overflow: 'visible',

@@ -48,7 +48,7 @@ namespace BookStoreWeb.Controllers
         // GET: SanPham/Create
         public IActionResult Create()
         {
-            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "TypeID");
+            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "Name");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace BookStoreWeb.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "TypeID", product.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "Name", product.TypeId);
             return View(product);
         }
 
@@ -82,7 +82,7 @@ namespace BookStoreWeb.Controllers
             {
                 return NotFound();
             }
-            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "TypeID", product.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "Name", product.TypeId);
             return View(product);
         }
 
@@ -118,7 +118,7 @@ namespace BookStoreWeb.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "TypeID", product.TypeId);
+            ViewData["TypeId"] = new SelectList(_context.Types, "TypeID", "Name", product.TypeId);
             return View(product);
         }
 

@@ -2,27 +2,41 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutTheme.cshtml";
 }
 
-<h1>Delete</h1>
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Header-->
+        <div class="card-header border-0">
+            <h3>Bạn chắc chắn xóa thể loại này không ?</h3>
+            <div>
+                <h4>Thể loại</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        Tên thể loại
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                </dl>
 
-<h3>Bạn chắc chắn xóa thể loại này không ?</h3>
-<div>
-    <h4>Thể loại</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            Tên thể loại
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="TypeID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Quay lại</a>
-    </form>
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="TypeID" />
+                    <input type="submit" value="Xóa" class="btn btn-danger" /> |
+                    <a class="btn btn-outline-info" asp-action="Index">Quay lại</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#menu-item-category').addClass('menu-item-active');
+    </script>
+}

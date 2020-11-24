@@ -2,74 +2,145 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutTheme.cshtml";
 }
 
-    <h2> Thêm Mới</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ProductName" class="control-label">Tên Sách</label>
-                <input asp-for="ProductName" class="form-control" />
-                <span asp-validation-for="ProductName" class="text-danger"></span>
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Card-->
+        <div class="card card-custom card-transparent">
+            <div class="card-body p-0">
+                <!--begin::Card-->
+                <div class="card card-custom card-shadowless rounded-top-0">
+                    <!--begin::Body-->
+                    <div class="card-body p-0">
+                        <div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
+                            <div class="col-xl-12 col-xxl-10">
+                                <!--begin::Wizard Form-->
+                                <form class="form" id="kt_form" asp-action="Create">
+                                    <div class="row justify-content-center">
+                                        <div class="col-xl-9">
+                                            <!--begin::Wizard Step 1-->
+                                            <div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
+                                                <h5 class="text-dark font-weight-bold mb-10">Tạo mới sản phẩm :</h5>
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label text-left">Hình ảnh</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <div class="image-input image-input-outline" id="kt_user_add_avatar">
+                                                            <div class="image-input-wrapper" style="background-image: url(image/book-placeholder-small.png)"></div>
+                                                            <label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+                                                                <i class="fa fa-pen icon-sm text-muted"></i>
+                                                                <input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" />
+                                                                <input type="text" hidden asp-for="ProductImage" value="book-placeholder-small.png" />
+                                                                <input type="hidden" name="profile_avatar_remove" />
+                                                            </label>
+                                                            <span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+                                                                <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Tên sách</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="text" value="" asp-for="ProductName" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Số lượng</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="number" value="" asp-for="ProducQuantity" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Tác giả</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="text" value="" asp-for="Tacgia" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Nhà xuất bản</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="text" value="" asp-for="NXB" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Nhà cung cấp</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="text" value="" asp-for="Nhacungcap" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Giá tiền</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="number" value="" asp-for="ProductPrice" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-xl-3 col-lg-3 col-form-label">Mô tả</label>
+                                                    <div class="col-lg-9 col-xl-9">
+                                                        <input class="form-control form-control-solid form-control-lg" type="text" value="" asp-for="Description" />
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                                <!--begin::Group-->
+                                                <div class="form-group row">
+                                                    <label class="col-form-label col-xl-3 col-lg-3">Thể loại</label>
+                                                    <div class="col-xl-9 col-lg-9">
+                                                        <select class="form-control form-control-lg form-control-solid" asp-items="@ViewBag.TypeId" asp-for="TypeId">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--end::Group-->
+                                            </div>
+                                            <!--end::Wizard Step 1-->
+                                            <!--begin::Wizard Actions-->
+                                            <div class="d-flex justify-content-between border-top pt-10 mt-15">
+                                                <div class="mr-2">
+                                                    <a asp-action="Index" class="btn btn-light-primary font-weight-bolder px-9 py-4">Trở lại</a>
+                                                </div>
+                                                <div>
+                                                    <button type="submit" class="btn btn-success font-weight-bolder px-9 py-4">Tạo</button>
+                                                </div>
+                                            </div>
+                                            <!--end::Wizard Actions-->
+                                        </div>
+                                    </div>
+                                </form>
+                                <!--end::Wizard Form-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card-->
             </div>
-            <div class="form-group">
-                <label asp-for="ProducQuantity" class="control-label"> Số Lượng</label>
-                <input asp-for="ProducQuantity" class="form-control" />
-                <span asp-validation-for="ProducQuantity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tacgia" class="control-label"> Tác Giả</label>
-                <input asp-for="Tacgia" class="form-control" />
-                <span asp-validation-for="Tacgia" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="NXB" class="control-label"> Nhà Xuất Bản</label>
-                <input asp-for="NXB" class="form-control" />
-                <span asp-validation-for="NXB" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Nhacungcap" class="control-label"> Nhà Cung Cấp</label>
-                <input asp-for="Nhacungcap" class="form-control" />
-                <span asp-validation-for="Nhacungcap" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductPrice" class="control-label"> Giá Tiền</label>
-                <input asp-for="ProductPrice" class="form-control" />
-                <span asp-validation-for="ProductPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProductImage" class="control-label"> Hình Ảnh</label>
-                <input type="file" asp-for="ProductImage" class="form-control" />
-                <span asp-validation-for="ProductImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"> Mô Tả</label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TypeId" class="control-label">Loại Sản Phẩm</label>
-                <br />
-                <select asp-for="TypeId" class="form-control" asp-items="@ViewBag.TypeId">
-                </select>
-                <span asp-validation-for="TypeId" class="text-danger"></span>
-            </div>
-            <br />
-            <br />
-            <br />
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+        <!--end::Card-->
     </div>
+    <!--end::Container-->
 </div>
+<!--end::Entry-->
 
-<div>
-    <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
-</div>
-
+@section Scripts{
+    <script type="text/javascript">
+        $('#menu-item-product').addClass('menu-item-active');
+    </script>
+}

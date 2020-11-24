@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
  * Bootstrap v4.4.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
@@ -58093,9 +58093,9 @@ body {
 
 @media (min-width: 992px) {
   .header-fixed .wrapper {
-    padding-top: 65px; }
+    padding-top: 10px; }
   .header-fixed.subheader-fixed.subheader-enabled .wrapper {
-    padding-top: 119px; }
+    padding-top: 15px; }
   .aside-fixed .wrapper {
     padding-left: 265px; }
   .aside-fixed.aside-minimize .wrapper {

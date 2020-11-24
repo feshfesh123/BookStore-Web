@@ -2,57 +2,68 @@
 
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutTheme.cshtml";
 }
 
+<!--begin::Entry-->
+<div class="d-flex flex-column-fluid">
+    <!--begin::Container-->
+    <div class="container">
+        <!--begin::Header-->
+        <div class="card-header border-0">
+            <h3 class="card-title font-weight-bolder text-dark">Bạn có chắc chắn muốn xóa sản phẩm này không ?</h3>
 
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ProductName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Tacgia)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Tacgia)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.NXB)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.NXB)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Nhacungcap)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Nhacungcap)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ProductPrice)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ProductPrice)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ProductImage)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ProductImage)
+                </dd>
 
-    <h3>Bạn có chắc chắn muốn xóa sản phẩm này không ? </h3>
-<div>
-
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tacgia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tacgia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NXB)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NXB)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nhacungcap)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nhacungcap)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductPrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductPrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductImage)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProductImage)
-        </dd>
- 
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="ProductId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a class="btn btn-outline-info" asp-action="Index">Back to List</a>
-    </form>
+            </dl>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="ProductId" />
+                <input type="submit" value="Xóa" class="btn btn-danger" /> |
+                <a class="btn btn-outline-info" asp-action="Index">Quay lại</a>
+            </form>
+        </div>
+        <!--end::Header-->
+    </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#menu-item-product').addClass('menu-item-active');
+    </script>
+}

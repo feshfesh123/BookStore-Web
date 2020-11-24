@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!--begin::Fonts-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!--end::Fonts-->
     <!--begin::Global Theme Styles(used by all pages)-->
     <link href="~/theme/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
@@ -19,6 +21,11 @@
     <link href="~/theme/assets/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" />
     <link href="~/theme/assets/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" />
     <link href="~/theme/assets/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+        }
+    </style>
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="~/theme/assets/media/logos/favicon.ico" />
 </head>
@@ -120,7 +127,7 @@
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             <li class="menu-item" aria-haspopup="true" id="menu-item-user">
-                                <a target="_blank" href="https://keenthemes.com/metronic/preview/demo1/builder.html" class="menu-link">
+                                <a asp-controller="ManageUser" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:~/theme/assets/media/svg/icons/Home/Library.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -140,8 +147,8 @@
                                 <h4 class="menu-text">COMMERCE</h4>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
-                            <li class="menu-item" aria-haspopup="true" id="id=" menu-item-category">
-                                <a target="_blank" href="https://keenthemes.com/metronic/preview/demo1/builder.html" class="menu-link">
+                            <li class="menu-item" aria-haspopup="true" id="menu-item-category">
+                                <a asp-controller="Types" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:~/theme/assets/media/svg/icons/Home/Library.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -156,7 +163,7 @@
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true" id="menu-item-product">
-                                <a target="_blank" href="https://keenthemes.com/metronic/preview/demo1/builder.html" class="menu-link">
+                                <a asp-controller="SanPham" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:~/theme/assets/media/svg/icons/Home/Library.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -172,7 +179,7 @@
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true" id="menu-item-discount">
-                                <a target="_blank" href="https://keenthemes.com/metronic/preview/demo1/builder.html" class="menu-link">
+                                <a asp-controller="Discounts" asp-action="Index" class="menu-link">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:~/theme/assets/media/svg/icons/Home/Library.svg-->
                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
