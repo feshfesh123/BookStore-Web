@@ -25,6 +25,12 @@ namespace BookStoreWeb.Models.Domain
 
         public string Phone { get; set; }
 
+        public string PaymentMethod { get; set; }
+
+        public bool IsCheckout { get; set; } = false;
+
+        public string PaypalId { get; set; } = "-1";
+
         public string Status { get; set; } = "đang giao dịch";
     }
 }

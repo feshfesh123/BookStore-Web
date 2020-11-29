@@ -56,6 +56,12 @@
                 </div>
 
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span> <br />
+                <div class="selectpaymentradios">
+                    <label class="radio">Chọn phương thức thanh toán :</label>
+                    <input class="radio ml-4" type="radio" asp-for="PaymentMethod" value="0" checked /> <span>Ship COD <img class="icon" src="~/icon/payment-method.svg"/></span>
+                    <input class="radio ml-5" type="radio" asp-for="PaymentMethod" value="1" /> <span>PayPal <img class="icon" src="~/icon/credit-card.svg"/></span>
+                </div>
+
                 <button type="submit" class="btn btn-success mt-3" asp-controller="Cart" asp-action="CheckOut">Thanh toán</button>
                 <a class="btn btn-warning mt-3" asp-controller="Home" asp-action="index" style="float:right">Tiếp tục mua hàng</a>
             </div>

@@ -27,6 +27,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="PagedList" Version="1.17.0" />
+    <PackageReference Include="PayPal" Version="2.0.0-rc2" />
     <PackageReference Include="X.PagedList" Version="8.0.7" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.0.7" />
     <PackageReference Include="X.PagedList.Web.Common" Version="8.0.7" />
