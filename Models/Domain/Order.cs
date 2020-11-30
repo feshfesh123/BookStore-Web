@@ -31,6 +31,6 @@ namespace BookStoreWeb.Models.Domain
 
         public string PaypalId { get; set; } = "-1";
 
-        public string Status { get; set; } = "đang giao dịch";
+        public string Status { get; set; } = "chưa duyệt";
     }
 }

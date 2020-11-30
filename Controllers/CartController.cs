@@ -182,7 +182,22 @@ namespace BookStoreWeb.Controllers
                     Amount = item.Quantity * item.ProductModel.ProductPrice,
                     ProductId = item.ProductModel.ProductId
                 };
+
                 order.OrderDetails.Add(orderDetail);
+
+                var product = dataContext.Products.FirstOrDefault(x => x.ProductId == item.ProductModel.ProductId);
+
+                if (product != null)
+                {
+                    if (product.ProducQuantity < item.Quantity)
+                    {
+                        return View("Views/Shared/OutOfStock.cshtml", product);
+                    }
+
+                    product.ProducQuantity -= item.Quantity;
+
+                    dataContext.Products.Update(product);
+                }
             }
 
             var createdOrder = dataContext.Orders.Add(order);
@@ -275,8 +290,6 @@ namespace BookStoreWeb.Controllers
                     PaymentMethod = "paypal"
                 }
             };
-
-
 
             PaymentCreateRequest request = new PaymentCreateRequest();
             request.RequestBody(payment);

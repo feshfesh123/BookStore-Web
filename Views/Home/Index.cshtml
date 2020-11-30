@@ -90,7 +90,7 @@
     <div class="card h-100">
         <div class="card-img-top">
             <div class="img">
-                <img src="~/image/@item.ProductImage" alt="">
+                <img src="@item.ProductImage" alt="">
                 <div class="txt">
                     <a asp-controller="Cart" asp-action="Buy" asp-route-id="@item.ProductId"><h3 style="color:aliceblue">MUA NGAY</h3></a>
                     <a asp-controller="Detail" asp-action="Index" asp-route-id="@item.ProductId" asp-route-name="@item.ProductName"><h3 style="color:aliceblue">XEM CHI TIẾT</h3></a>

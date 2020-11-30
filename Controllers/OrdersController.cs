@@ -57,7 +57,27 @@ namespace BookStoreWeb.Controllers
         }
 
         // Action Done -> khách hàng đã thanh toán và đang giao hàng
-        public async Task<IActionResult> Done(int? id)
+        public async Task<IActionResult> Delivered(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.Include(x => x.OrderDetails).FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = "đã giao hàng";
+
+            _context.Update(order);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Temp));
+        }
+
+        public async Task<IActionResult> Approve(int? id)
         {
             if (id == null)
             {
@@ -70,11 +90,62 @@ namespace BookStoreWeb.Controllers
             {
                 return NotFound();
             }
-            order.Status = "đã thanh toán";
+            order.Status = "chờ lấy hàng";
+            
             _context.Update(order);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
 
+            return RedirectToAction(nameof(Temp));
+        }
+
+        public async Task<IActionResult> Delivering(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = "đang giao hàng";
+            _context.Update(order);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Temp));
+        }
+
+        public async Task<IActionResult> Cancel(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders.FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = "khách hủy đơn";
+
+            foreach (var item in order.OrderDetails)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == item.ProductId);
+
+                if (product != null)
+                {
+                    product.ProducQuantity += item.Quantity;
+                    _context.Products.Update(product);
+                }
+            }
+
+            _context.Update(order);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Temp));
         }
 
         // GET: Orders/Delete/5
