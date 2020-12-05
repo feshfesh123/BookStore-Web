@@ -29,7 +29,7 @@ namespace BookStoreWeb.Controllers
         // GET: Orders
         public async Task<IActionResult> Temp()
         {
-            var dataContext = _context.Orders.Include(o => o.User);
+            var dataContext = _context.Orders.Include(o => o.User).OrderByDescending(x => x.DateTime);
             return View(await dataContext.ToListAsync());
         }
 

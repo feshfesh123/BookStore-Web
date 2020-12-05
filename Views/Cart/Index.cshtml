@@ -23,7 +23,7 @@
                 <td><a class="btn btn-primary" asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductModel.ProductId">Xóa</a></td>
                 <td>@item.ProductModel.ProductId</td>
                 <td>@item.ProductModel.ProductName</td>
-                <td><img src="~/image/@item.ProductModel.ProductImage" width="60" height="60" /> </td>
+                <td><img src="@item.ProductModel.ProductImage" width="60" height="60" /> </td>
                 <td>@item.ProductModel.ProductPrice</td>
                 <td>@item.Quantity</td>
                 <td>@(item.ProductModel.ProductPrice * item.Quantity)</td>
@@ -58,8 +58,8 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span> <br />
                 <div class="selectpaymentradios">
                     <label class="radio">Chọn phương thức thanh toán :</label>
-                    <input class="radio ml-4" type="radio" asp-for="PaymentMethod" value="0" checked /> <span>Ship COD <img class="icon" src="~/icon/payment-method.svg"/></span>
-                    <input class="radio ml-5" type="radio" asp-for="PaymentMethod" value="1" /> <span>PayPal <img class="icon" src="~/icon/credit-card.svg"/></span>
+                    <input class="radio ml-4" type="radio" asp-for="PaymentMethod" value="0" checked /> <span>Ship COD <img class="icon" src="~/icon/payment-method.svg" /></span>
+                    <input class="radio ml-5" type="radio" asp-for="PaymentMethod" value="1" /> <span>PayPal <img class="icon" src="~/icon/credit-card.svg" /></span>
                 </div>
 
                 <button type="submit" class="btn btn-success mt-3" asp-controller="Cart" asp-action="CheckOut">Thanh toán</button>

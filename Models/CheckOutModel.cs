@@ -14,7 +14,6 @@ namespace BookStoreWeb.Models
         public string PhoneNumber { get; set; }
         public string DiscountCode { get; set; }
         public int PaymentMethod { get; set; }
-
         public int OrderId { get; set; }
     }
 }

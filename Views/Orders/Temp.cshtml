@@ -58,7 +58,7 @@
             },
 
             // column sorting
-            sortable: true,
+            sortable: false,
 
             pagination: true,
 
@@ -246,24 +246,14 @@
             }],
         });
 
-        //$('#kt_datatable_search_status').on('change', function () {
-        //    datatable.search($(this).val().toLowerCase(), 'Status');
-        //});
+        $('#kt_datatable_search_status').on('change', function () {
+            datatable.search($(this).val().toLowerCase(), 'Status');
+        });
 
-        //$('#kt_datatable_search_type').on('change', function () {
-        //    datatable.search($(this).val().toLowerCase(), 'Type');
-        //});
+        $('#kt_datatable_search_type').on('change', function () {
+            datatable.search($(this).val().toLowerCase(), 'Type');
+        });
 
-        //$('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
+        $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
     </script>
 }
-
-@*@section Scripts{
-        <script type="text/javascript">
-            console.log("Ok");
-
-            var dataJson = @JsonConvert.SerializeObject(Model);
-                console.log(dataJson);
-
-        </script>
-    }*@

@@ -11,25 +11,29 @@ using Microsoft.AspNetCore.Http;
 using PayPal.v1.Payments;
 using PayPal.Core;
 using BraintreeHttp;
+using BookStoreWeb.Services;
 
 namespace BookStoreWeb.Controllers
 {
     public class CartController : Controller
     {
-        private readonly DataContext dataContext;
-        private readonly string _ClientId = "AQgOM5XiOSVpMRjQ0fFVC3Yb52leSRl59H6fEaO9kWGhIBGOpegc_ggLtr-zGV4uKpu0CXGnPWbV_pow";
-        private readonly string _SecretKey = "EKzy6wAJj-Smzarq2QmNHKNRuz1GGxgIAiIwpgq5y62rDyv06MSMs7m7QPRA8GXvpvN7jekBGfSGbSs_";
-        private readonly double TyGiaUSD = 23300;
+        private readonly DataContext _DataContext;
 
-        private PayPalHttpClient Client;
+        private readonly PaymentService _PaymentService;
 
-        public CartController(DataContext dataContext)
+        private readonly OrderService _OrderService;
+
+        private readonly EmailService _EmailService;
+
+        public CartController(DataContext dataContext, PaymentService paymentService, OrderService orderService, EmailService emailService)
         {
-            this.dataContext = dataContext;
+            this._DataContext = dataContext;
 
-            var environment = new SandboxEnvironment(_ClientId, _SecretKey);
+            this._PaymentService = paymentService;
 
-            Client = new PayPalHttpClient(environment);
+            this._OrderService = orderService;
+
+            this._EmailService = emailService;
         }
 
         [Route("Index")]
@@ -47,53 +51,14 @@ namespace BookStoreWeb.Controllers
         [Route("buy/{id}")]
         public IActionResult Buy(int id)
         {
+            var cart = SessionHelper.GetObjectFromJson<List<ProductToCart>>(HttpContext.Session, "cart");
 
-            if (SessionHelper.GetObjectFromJson<List<ProductToCart>>(HttpContext.Session, "cart") == null)
-            {
-                // Kiem tra gio hang co null hay ko
-                Product p = dataContext.Products.Find(id);  //Lay ra ID cua san pham <3
-                List<ProductToCart> cart = new List<ProductToCart>();
-                cart.Add(new ProductToCart
-                {
-                    // Add san pham vo Cart
-                    ProductModel = new ProductModel()
-                    {
-                        ProductId = p.ProductId,
-                        ProductName = p.ProductName,
-                        ProductImage = p.ProductImage,
-                        ProductPrice = p.ProductPrice,
-                    },
-                    Quantity = 1
-                });
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
-            else
-            {
-                //Gio hang ko null thi tang gia tri gio hang len theo tung san pham Add
-                List<ProductToCart> cart = SessionHelper.GetObjectFromJson<List<ProductToCart>>(HttpContext.Session, "cart");
-                int index = isExist(id);
-                if (index != -1)
-                {
-                    cart[index].Quantity++;
-                }
-                else
-                {
-                    Product p = dataContext.Products.Find(id);
-                    cart.Add(new ProductToCart
-                    {
-                        ProductModel = new ProductModel()
-                        {
-                            ProductId = p.ProductId,
-                            ProductName = p.ProductName,
-                            ProductImage = p.ProductImage,
-                            ProductPrice = p.ProductPrice
-                        },
-                        Quantity = 1,
-                    });
-                }
+            Product product = _DataContext.Products.Find(id);  //Lay ra ID cua san pham <3
 
-                SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
-            }
+            cart = _OrderService.AddProductToCart(product, cart);
+
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "cart", cart);
+           
             return RedirectToAction("Index");
         }
 
@@ -121,8 +86,9 @@ namespace BookStoreWeb.Controllers
 
         public IActionResult CheckOut()
         {
-
             var cart = SessionHelper.GetObjectFromJson<List<ProductToCart>>(HttpContext.Session, "cart");
+
+            ViewBag.userId = HttpContext.Session.GetInt32("UserID").GetValueOrDefault();
             ViewBag.cart = cart;
             ViewBag.total = cart.Sum(item => item.ProductModel.ProductPrice * item.Quantity);
             cart.Clear();
@@ -138,7 +104,6 @@ namespace BookStoreWeb.Controllers
             {
                 return RedirectToAction("Login", "Accounts");
             }
-
 
             // Nếu chưa nhập đủ sđt và địa chỉ thì quay lại
             if (!ModelState.IsValid)
@@ -168,12 +133,6 @@ namespace BookStoreWeb.Controllers
             // Kiem tra xem phuong thuc thanh toan nao
             order.PaymentMethod = model.PaymentMethod == 0 ? "Ship COD" : "Paypal";
 
-            //else
-            //{
-            //    
-            //    return RedirectToAction("PaypalPayment", model);
-            //}
-
             foreach (var item in cart)
             {
                 var orderDetail = new OrderDetail()
@@ -185,24 +144,24 @@ namespace BookStoreWeb.Controllers
 
                 order.OrderDetails.Add(orderDetail);
 
-                var product = dataContext.Products.FirstOrDefault(x => x.ProductId == item.ProductModel.ProductId);
+                var product = _DataContext.Products.FirstOrDefault(x => x.ProductId == item.ProductModel.ProductId);
 
                 if (product != null)
                 {
                     if (product.ProducQuantity < item.Quantity)
                     {
-                        return View("Views/Shared/OutOfStock.cshtml", product);
+                        return View("OutOfStock.cshtml", product);
                     }
 
                     product.ProducQuantity -= item.Quantity;
 
-                    dataContext.Products.Update(product);
+                    _DataContext.Products.Update(product);
                 }
             }
 
-            var createdOrder = dataContext.Orders.Add(order);
-            dataContext.SaveChanges();
-
+            var createdOrder = _DataContext.Orders.Add(order);
+            _DataContext.SaveChanges();
+            
             if (model.PaymentMethod != 0)
             {
                 model.OrderId = createdOrder.Entity.OrderId;
@@ -212,20 +171,14 @@ namespace BookStoreWeb.Controllers
                 return RedirectToAction("PaypalPayment", model);
             }
 
-            return RedirectToAction("PaymentSuccess");
+            return RedirectToAction("PaymentSuccess", new { orderId = createdOrder.Entity.OrderId.ToString()});
         }
 
         public async Task<IActionResult> PayPalPayment(CheckOutModel model)
         {
-            var order = dataContext.Orders.FirstOrDefault(x => x.OrderId == model.OrderId);
+            var order = _DataContext.Orders.FirstOrDefault(x => x.OrderId == model.OrderId);
 
             if (order == null) return NotFound();
-
-            #region Create Paypal Order
-            var itemList = new ItemList()
-            {
-                Items = new List<Item>()
-            };
 
             var cart = SessionHelper.GetObjectFromJson<List<ProductToCart>>(HttpContext.Session, "cart");
 
@@ -237,88 +190,19 @@ namespace BookStoreWeb.Controllers
                 sale = (100 - CheckDiscount(model.DiscountCode)) / 100;
             }
 
-            var total = cart.Sum(item => Math.Round(item.ProductModel.ProductPrice * sale / TyGiaUSD, 2) * item.Quantity);
-
-            foreach (var item in cart)
-            {
-                itemList.Items.Add(new Item()
-                {
-                    Name = item.ProductModel.ProductName,
-                    Currency = "USD",
-                    Price = Math.Round(item.ProductModel.ProductPrice * sale / TyGiaUSD, 2).ToString(),
-                    Quantity = item.Quantity.ToString(),
-                    Sku = "sku",
-                    Tax = "0"
-                });
-            }
-            #endregion
-
-            var paypalOrderId = DateTime.Now.Ticks.ToString();
             var hostname = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
-            var payment = new Payment()
-            {
-                Id = paypalOrderId,
-                Intent = "SALE",
-                Transactions = new List<Transaction>()
-                {
-                    new Transaction()
-                    {
-                        Amount = new Amount()
-                        {
-                            Total = total.ToString(),
-                            Currency = "USD",
-                            Details = new AmountDetails
-                            {
-                                Tax = "0",
-                                Shipping = "0",
-                                Subtotal = total.ToString(),
-                            }
-                        },
-                        ItemList = itemList,
-                        Description = $"Invoice #{paypalOrderId}",
-                        InvoiceNumber = paypalOrderId,
-
-                    }
-                },
-                RedirectUrls = new RedirectUrls()
-                {
-                    CancelUrl = $"{hostname}/Cart/PaymentFail",
-                    ReturnUrl = $"{hostname}/Cart/PaymentSuccess"
-                },
-                Payer = new Payer()
-                {
-                    PaymentMethod = "paypal"
-                }
-            };
-
-            PaymentCreateRequest request = new PaymentCreateRequest();
-            request.RequestBody(payment);
 
             try
             {
-                var response = await Client.Execute(request);
-                var statusCode = response.StatusCode;
-                Payment result = response.Result<Payment>();
+                var paypalPayment = await _PaymentService.GetURLPaymentWithPaypal(cart, sale, hostname);
 
-                var links = result.Links.GetEnumerator();
-                string paypalRedirectUrl = null;
-                while (links.MoveNext())
-                {
-                    LinkDescriptionObject lnk = links.Current;
-                    if (lnk.Rel.ToLower().Trim().Equals("approval_url"))
-                    {
-                        //saving the payapalredirect URL to which user will be redirected for payment  
-                        paypalRedirectUrl = lnk.Href;
-                    }
-                }
+                order.PaypalId = paypalPayment.PaypalId;
 
-                order.PaypalId = result.Id;
+                _DataContext.Orders.Update(order);
 
-                dataContext.Orders.Update(order);
+                _DataContext.SaveChanges();
 
-                dataContext.SaveChanges();
-
-                return Redirect(paypalRedirectUrl);
+                return Redirect(paypalPayment.RedirectURL);
             }
             catch (HttpException httpException)
             {
@@ -328,7 +212,6 @@ namespace BookStoreWeb.Controllers
                 //Process when Checkout with Paypal fails
                 return Redirect("/Cart/PaymentFail");
             }
-
         }
 
         public IActionResult PaymentFail()
@@ -336,37 +219,38 @@ namespace BookStoreWeb.Controllers
             return View();
         }
 
-        public async Task<IActionResult> PaymentSuccess(string paymentId, string payerId)
+        public async Task<IActionResult> PaymentSuccess(string paymentId, string payerId, string orderId)
         {
             if (paymentId != null && payerId != null)
             {
-                var order = dataContext.Orders.FirstOrDefault(x => x.PaypalId == paymentId);
+                var order = _DataContext.Orders.FirstOrDefault(x => x.PaypalId == paymentId);
+                
+                var paypalCheckout = await _PaymentService.ExecutePayment(paymentId, payerId);
 
-                PaymentExecuteRequest request = new PaymentExecuteRequest(order.PaypalId);
-
-                request.RequestBody(new PaymentExecution()
-                {
-                    PayerId = payerId
-                });
-
-                var response = await Client.Execute(request);
-
-                Payment result = response.Result<Payment>();
-
-                if (result.State.ToLower() == "approved")
+                if (paypalCheckout)
                 {
                     order.IsCheckout = true;
 
-                    dataContext.Orders.Update(order);
+                    _DataContext.Orders.Update(order);
 
-                    dataContext.SaveChanges();
+                    await _DataContext.SaveChangesAsync();
 
-                    return View();
+                    orderId = order.OrderId.ToString();
                 }
                 else
                 {
                     return RedirectToAction("PaymentFail");
                 }
+            }
+
+            var userId = HttpContext.Session.GetInt32("UserID").GetValueOrDefault();
+
+            var user = _DataContext.Users.FirstOrDefault(x => x.UserId == userId);
+
+            if (user != null)
+            {
+                var content = $"CÁM ƠN {user.FirstName} {user.LastName} ĐÃ HÀNG THÀNH CÔNG.<br/> MÃ ĐƠN HÀNG CỦA BẠN LÀ {orderId}.<br/> BẠN CÓ THỂ KIỂM TRA LẠI ĐƠN HÀNG Ở WEBSITE : {HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+                await _EmailService.SendMailAsync(user.Email, "ĐẶT HÀNG THÀNH CÔNG", content);
             }
 
             return View();
@@ -376,7 +260,7 @@ namespace BookStoreWeb.Controllers
         [HttpPost]
         public double CheckDiscount(string Code)
         {
-            var discount = dataContext.Discounts.FirstOrDefault(x => x.Name == Code);
+            var discount = _DataContext.Discounts.FirstOrDefault(x => x.Name == Code);
             if (discount != null &&
                 discount.QuantityDiscount > 0 &&
                 discount.CreatDate <= DateTime.Now &&

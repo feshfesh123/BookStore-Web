@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BookStoreWeb.Models.Domain;
+using BookStoreWeb.Services;
 
 namespace BookStoreWeb
 {
@@ -30,11 +31,15 @@ namespace BookStoreWeb
         {
             services.AddControllersWithViews();
             services.AddSingleton(provider => ProductData.initData());
-            services.AddMvc();
+            services.AddMvc(); 
             services.AddSession();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages().AddRazorRuntimeCompilation();
+
+            services.AddScoped<PaymentService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
