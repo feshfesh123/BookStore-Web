@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookStoreWeb.Data;
 using BookStoreWeb.Models;
+using BookStoreWeb.Models.Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStoreWeb.Controllers
 {
@@ -37,9 +40,33 @@ namespace BookStoreWeb.Controllers
                 productModel.ProductPrice = p.ProductPrice;
                 productModel.ProductImage = p.ProductImage;
                 productModel.Description = p.Description;
-
+                productModel.Comments = dataContext.Comments.Include(x => x.User).Where(x => x.ProductId == p.ProductId).OrderByDescending(x => x.CreatedAt).ToList();
             }
             return View(productModel);
+        }
+
+        [HttpPost]
+        public IActionResult Comment(CommentModel model)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
+
+            var entity = new Comment
+            {
+                UserId = userId.GetValueOrDefault(),
+                CreatedAt = DateTime.Now,
+                ProductId = model.ProductId,
+                Content = model.Content
+            };
+
+            dataContext.Comments.Add(entity);
+            dataContext.SaveChanges();
+
+            return RedirectToAction("Index", new { id = model.ProductId });
         }
     }
 }

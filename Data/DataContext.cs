@@ -31,6 +31,8 @@ namespace BookStoreWeb.Data
 
         public DbSet<Models.Domain.Type> Types { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

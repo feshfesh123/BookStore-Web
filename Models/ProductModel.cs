@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookStoreWeb.Models.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -45,7 +46,10 @@ namespace BookStoreWeb.Models
         [DisplayName("Mô tả")]
         public string Description { get; set; }
 
+        public List<Comment> Comments { get; set; } = new List<Comment>();
+
         private static int nextId = 1;
+
 
         public ProductModel()
         {
