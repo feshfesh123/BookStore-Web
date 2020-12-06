@@ -1,19 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using BookStoreWeb.Data;
 using BookStoreWeb.Models;
+using BookStoreWeb.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BookStoreWeb.Models.Domain;
-using BookStoreWeb.Services;
 
 namespace BookStoreWeb
 {
@@ -30,6 +24,7 @@ namespace BookStoreWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddSingleton(provider => ProductData.initData());
             services.AddMvc(); 
             services.AddSession();
@@ -37,9 +32,11 @@ namespace BookStoreWeb
             services.AddAutoMapper(typeof(Startup));
             services.AddRazorPages().AddRazorRuntimeCompilation();
 
+            
             services.AddScoped<PaymentService>();
             services.AddScoped<OrderService>();
             services.AddScoped<EmailService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

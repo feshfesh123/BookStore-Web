@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h3>Quản Lí Hóa Đơn</h3>
+    <h3>Các đơn hàng của bạn</h3>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -56,9 +53,11 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                <a asp-action="Done" asp-route-id="@item.OrderId" >Done</a>  |
-                <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
+                <a asp-action="UserDetails" asp-route-id="@item.OrderId">Details</a>|
+                @if (item.Status == "chờ lấy hàng" || item.Status == "chưa duyệt")
+                {
+                    <a asp-action="UserCancel" asp-route-id="@item.OrderId">Cancel</a>
+                }
             </td>
         </tr>
 }

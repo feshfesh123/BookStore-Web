@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BookStoreWeb.Data;
 using BookStoreWeb.Models.Domain;
+using Microsoft.AspNetCore.Http;
 
 namespace BookStoreWeb.Controllers
 {
@@ -22,7 +23,16 @@ namespace BookStoreWeb.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var dataContext = _context.Orders.Include(o => o.User);
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            // Kiểm tra nếu chưa đăng nhập, trả về trang login
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Accounts");
+            }
+
+            var dataContext = _context.Orders.Include(o => o.User).Where(x => x.UserId == userId);
+
             return View(await dataContext.ToListAsync());
         }
 
@@ -47,6 +57,30 @@ namespace BookStoreWeb.Controllers
                 .Include(order => order.OrderDetails)
                     .ThenInclude(orderProduct => orderProduct.Product)
                 .FirstOrDefaultAsync(m => m.OrderId == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+        }
+
+        // GET: Orders/Details/5
+        public async Task<IActionResult> UserDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            var order = await _context.Orders
+                .Include(order => order.User)
+                .Include(order => order.OrderDetails)
+                    .ThenInclude(orderProduct => orderProduct.Product)
+                .FirstOrDefaultAsync(m => m.OrderId == id && m.UserId == userId);
 
             if (order == null)
             {
@@ -146,6 +180,39 @@ namespace BookStoreWeb.Controllers
             _context.Update(order);
             _context.SaveChanges();
             return RedirectToAction(nameof(Temp));
+        }
+
+        public async Task<IActionResult> UserCancel(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            var order = await _context.Orders.FirstOrDefaultAsync(m => m.OrderId == id && m.UserId == userId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            order.Status = "khách hủy đơn";
+
+            foreach (var item in order.OrderDetails)
+            {
+                var product = await _context.Products.FirstOrDefaultAsync(x => x.ProductId == item.ProductId);
+
+                if (product != null)
+                {
+                    product.ProducQuantity += item.Quantity;
+                    _context.Products.Update(product);
+                }
+            }
+
+            _context.Update(order);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Orders/Delete/5
