@@ -1,0 +1,44 @@
+﻿@model BookStoreWeb.Models.Domain.Users
+
+<div class="row">
+    <form asp-action="UserInfor" asp-controller="Accounts" method="post">
+        <div class="col-12 col-md-8">
+            <dl class="row">
+                <input asp-for="UserId" hidden />
+                <div class="w-100"></div>
+                <br />
+                <div class="col-sm-4">First name : </div>
+                <input style=" color:chocolate " class="col-sm-6" asp-for="FirstName" />
+                <div class="w-100"></div>
+                <br />
+                <div class="col-sm-4">Last name :</div>
+                <input style=" color:chocolate " class="col-sm-6" asp-for="LastName" />
+                <div class="w-100"></div>
+                <br />
+                <div class="col-sm-4">Email :</div>
+                <input style=" color:chocolate " class="col-sm-6" asp-for="Email" readonly />
+                <div class="w-100"></div>
+                <br />
+                <div class="col-sm-4">Password :</div>
+                <input style=" color:chocolate " class="col-sm-6" type="password" asp-for="Password" />
+                <div class="w-100"></div>
+
+                <br />
+            </dl>
+        </div>
+        <button class="btn btn-primary">Cập nhật</button>
+    </form>
+</div>
+
+@section Scripts{ 
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+}

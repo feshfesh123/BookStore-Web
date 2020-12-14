@@ -43,6 +43,36 @@ namespace BookStoreWeb.Controllers
             return View();
         }
 
+        public IActionResult UserInfor()
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId == null) return NotFound();
+
+            var user = dataContext.Users.FirstOrDefault(x => x.UserId == userId);
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public IActionResult UserInfor(Users user)
+        {
+            var userId = HttpContext.Session.GetInt32("UserID");
+
+            if (userId != user.UserId) return NotFound();
+
+            var userEntity = dataContext.Users.FirstOrDefault(x => x.UserId == userId);
+
+            userEntity.FirstName = user.FirstName;
+            userEntity.LastName = user.LastName;
+            userEntity.Password = user.Password;
+
+            dataContext.Users.Update(userEntity);
+            dataContext.SaveChanges();
+
+            return RedirectToAction("UserInfor");
+        }
+
         public IActionResult Register()
         {
             return View();

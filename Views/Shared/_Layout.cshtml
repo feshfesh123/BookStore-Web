@@ -75,6 +75,9 @@
                                         <a href=""><i class="fa fa-user-circle ml-lg-3"></i>@email</a>
                                     </div>
                                     <div class="header__top__right__auth">
+                                        <a asp-action="UserInfor" asp-controller="Accounts"><i class="fa fa-sign-out ml-lg-3"></i>Thông tin</a>
+                                    </div>
+                                    <div class="header__top__right__auth">
                                         <a asp-action="Logout" asp-controller="Accounts"><i class="fa fa-sign-out ml-lg-3"></i>Đăng xuất</a>
                                         @*<i class="fa fa-sign-out ml-lg-3">@Html.ActionLink("Đăng xuất","Logout", "Accounts")</i>*@
                                     </div>
@@ -88,7 +91,7 @@
                                         <a asp-controller="Accounts" asp-action="Register"><i class="fa fa-user-plus ml-lg-3"></i> Đăng ký</a>
                                     </div>
                                 }
-                                        }
+                            }
                             <div class="header__top__right__auth">
                                 <a asp-controller="Cart" asp-action="Index"><i class="fa fa-shopping-cart ml-lg-3"></i> Giỏ hàng</a>
                             </div>
