@@ -62,7 +62,7 @@ namespace BookStoreWeb.Controllers
         [HttpPost]
         public IActionResult SearchItem(string searchname)
         {
-            var product = data.Products.FirstOrDefault(m => m.ProductName == searchname); //gia tri dau tien hoac mac dinh la null
+            var product = data.Products.FirstOrDefault(m => m.ProductName.Contains(searchname)); //gia tri dau tien hoac mac dinh la null
 
             return View(product);
 
